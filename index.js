@@ -3,7 +3,6 @@
 //contributing, tests and questions
 const fs = require("fs");
 const inquirer = require("inquirer");
-const util = require("util");
 
 function promptQuestions() {
     return inquirer.prompt([
@@ -53,50 +52,58 @@ function promptQuestions() {
 
 function generateREADME(data){
     return `
-    #${data.title}
+# ${data.title}
 
-    ## Description
-    
-    ${data.description}
+## Description
 
-    ## Table of Content
+${data.description}
 
-    * [Installation](#installation)
-    * [Usage](#usage)
-    * [Contributing](#contributing)
-    * [Tests](#tests)
-    * [License](#license)
-    
-    ## Installation
+## Table of Content
 
-    ${data.installation}
+* [Installation](#installation)
+* [Usage](#usage)
+* [Contributing](#contributing)
+* [Tests](#tests)
+* [License](#license)
 
-    ## Usage
+## Installation
 
-    ${data.usage}
+${data.installation}
 
-    ## Contribution
+## Usage
 
-    ${data.contributing}
+${data.usage}
 
-    ## Tests
+## Contribution
 
-    ${data.tests}
+${data.contributing}
 
-    ## Questions
+## Tests
 
-    ${data.questions}
-    
-    ## License
+${data.tests}
 
-    ${data.license}
-    
-    `
-}
+## Questions
+
+${data.questions}
+
+## License
+
+Licensed under the ${data.license} license
+
+
+`
+};
 
 // function to write README file
 function writeToFile(fileName, data) {
-}
+    fs.writeFile("./GeneratedREADME/"+fileName, data, function(err){
+        if(err){
+            return console.log(err)
+        };
+
+        console.log("Successfully wrote 'README.md'");
+    });
+};
 
 // function to initialize program
 function init() {
@@ -114,11 +121,10 @@ function init() {
         console.log(providedAnswers);
 
         const README = generateREADME(providedAnswers);
-    })
-    .then(function(){
 
+        writeToFile("README.md", README);
     })
-}
+};
 
 // function call to initialize program
 init();
