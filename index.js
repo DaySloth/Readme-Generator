@@ -50,7 +50,7 @@ function promptQuestions() {
     ]);
 };
 
-function generateREADME(data){
+function generateREADME(data) {
     return `
 # ${data.title}
 
@@ -96,34 +96,32 @@ Licensed under the ${data.license} license
 
 // function to write README file
 function writeToFile(fileName, data) {
-    fs.writeFile("./GeneratedREADME/"+fileName, data, function(err){
-        if(err){
+    fs.writeFile("./GeneratedREADME/" + fileName, data, function (err) {
+        if (err) {
             return console.log(err)
         };
 
-        console.log("Successfully wrote 'README.md'");
+        console.log("Successfully wrote 'README.md' to '/generatedREADME/README.md'");
     });
 };
 
 // function to initialize program
 function init() {
-    promptQuestions().then(function(answers){
-        let providedAnswers = answers;
-        console.log(providedAnswers);
-        if(providedAnswers.license === "Apache"){
-            providedAnswers.license = "[Apache](http://www.apache.org/licenses/LICENSE-2.0)";
-        }else if(providedAnswers.license === "MIT"){
-            providedAnswers.license = "[MIT](https://choosealicense.com/licenses/mit/)";
-        }else{
-            providedAnswers.license = "[ISC](https://choosealicense.com/licenses/isc/)";
-        };
+    promptQuestions()
+        .then(function (answers) {
+            let providedAnswers = answers;
+            if (providedAnswers.license === "Apache") {
+                providedAnswers.license = "[Apache](http://www.apache.org/licenses/LICENSE-2.0)";
+            } else if (providedAnswers.license === "MIT") {
+                providedAnswers.license = "[MIT](https://choosealicense.com/licenses/mit/)";
+            } else {
+                providedAnswers.license = "[ISC](https://choosealicense.com/licenses/isc/)";
+            };
 
-        console.log(providedAnswers);
+            const README = generateREADME(providedAnswers);
 
-        const README = generateREADME(providedAnswers);
-
-        writeToFile("README.md", README);
-    })
+            writeToFile("README.md", README);
+        });
 };
 
 // function call to initialize program
