@@ -55,6 +55,7 @@ function promptQuestions() {
     ]);
 };
 
+//takes in the passed in object and returns code for the readme
 function generateREADME(data) {
     return `
 # ${data.title}
@@ -97,10 +98,9 @@ ${data.questions}
 
 Licensed under the ${data.license} license
 
-
 `
 };
-
+// asks for a custom url if chosen during the prompts
 function askURL() {
     return inquirer.prompt([
         {
@@ -113,20 +113,23 @@ function askURL() {
 
 // function to write README file
 function writeToFile(fileName, data) {
+    //writes to a specific folder so it does not mess up the current project readme
     fs.writeFile("./GeneratedREADME/" + fileName, data, function (err) {
         if (err) {
             return console.log(err)
         };
-
+        //console logs a success message
         console.log("Successfully wrote 'README.md' to '/generatedREADME/README.md'");
     });
 };
 
 // function to initialize program
 function init() {
+    //prompts for the questions
     promptQuestions()
         .then(function (answers) {
             let providedAnswers = answers;
+            //checks the obj to replace the license to a good markdown code for the selected license
             if (providedAnswers.license === "Apache") {
                 providedAnswers.license = "[Apache](http://www.apache.org/licenses/LICENSE-2.0)";
             } else if (providedAnswers.license === "MIT") {
@@ -135,16 +138,24 @@ function init() {
                 providedAnswers.license = "[ISC](https://choosealicense.com/licenses/isc/)";
             };
 
+            //checks to see if the user wanted a custom url
             if(providedAnswers.customImage === "Yes"){
+                //asking for the custom url
                 askURL()
                     .then(function(response){
+                        //adds url to the obj
                         providedAnswers.imageAddress = response.customURL;
+                        //generates markdown for readme
                         const README = generateREADME(providedAnswers);
+                        //writes to a README.md file
                         writeToFile("README.md", README);
                     })
             }else{
+                //if they did not want a custom image a selected default image is supplied in its place
                 providedAnswers.imageAddress = 'https://images.unsplash.com/photo-1504198266287-1659872e6590?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80';
+                //generates markdown for readme
                 const README = generateREADME(providedAnswers);
+                //write to a README.md file
                 writeToFile("README.md", README);
             }
         });
