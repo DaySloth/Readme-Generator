@@ -1,5 +1,7 @@
 # Professional Readme Generator
 
+![MIT License](https://img.shields.io/badge/License-MIT-green)
+
 ![Image of Application](./img/readme-img.PNG)
 
 ## Description 
