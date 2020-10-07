@@ -3,6 +3,8 @@ function generateMarkdown(data) {
   return `
 # ${data.title}
 
+${data.licenseBadge}
+
 ![Image of Project](${data.imageAddress})
 
 ## Description
@@ -35,7 +37,10 @@ ${data.tests}
 
 ## Questions
 
-${data.questions}
+You can contact me with any questions:
+
+Email: ${data.email}
+GitHub: [${data.gitHub}](https://github.com/${data.gitHub})
 
 ## License
 
