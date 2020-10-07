@@ -4,6 +4,8 @@ const inquirer = require("inquirer");
 
 // array of questions for user
 function promptQuestions() {
+
+    //uses inquirer to prompt the user for answers in the terminal
     return inquirer.prompt([
         {
             type: "input",
