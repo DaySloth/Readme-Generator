@@ -1,6 +1,8 @@
 // required npm packages
 const fs = require("fs");
 const inquirer = require("inquirer");
+//requires generate markdown file provided
+const genReadme = require("./utils/generateMarkdown");
 
 // array of questions for user
 function promptQuestions() {
@@ -57,51 +59,6 @@ function promptQuestions() {
     ]);
 };
 
-//takes in the passed in object and returns code for the readme
-function generateREADME(data) {
-    return `
-# ${data.title}
-
-![Image of Project](${data.imageAddress})
-
-## Description
-
-${data.description}
-
-## Table of Content
-
-* [Installation](#installation)
-* [Usage](#usage)
-* [Contributing](#contributing)
-* [Tests](#tests)
-* [License](#license)
-
-## Installation
-
-${data.installation}
-
-## Usage
-
-${data.usage}
-
-## Contribution
-
-${data.contributing}
-
-## Tests
-
-${data.tests}
-
-## Questions
-
-${data.questions}
-
-## License
-
-Licensed under the ${data.license} license
-
-`
-};
 // asks for a custom url if chosen during the prompts
 function askURL() {
     return inquirer.prompt([
@@ -148,7 +105,7 @@ function init() {
                         //adds url to the obj
                         providedAnswers.imageAddress = response.customURL;
                         //generates markdown for readme
-                        const README = generateREADME(providedAnswers);
+                        const README = genReadme(providedAnswers);
                         //writes to a README.md file
                         writeToFile("README.md", README);
                     })
@@ -156,7 +113,7 @@ function init() {
                 //if they did not want a custom image a selected default image is supplied in its place
                 providedAnswers.imageAddress = 'https://images.unsplash.com/photo-1504198266287-1659872e6590?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80';
                 //generates markdown for readme
-                const README = generateREADME(providedAnswers);
+                const README = genReadme(providedAnswers);
                 //write to a README.md file
                 writeToFile("README.md", README);
             }
