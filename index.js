@@ -53,8 +53,13 @@ function promptQuestions() {
         },
         {
             type: "input",
-            name: "questions",
-            message: "What questions are left after this project?"
+            name: "email",
+            message: "What is your email?"
+        },
+        {
+            type: "input",
+            name: "gitHub",
+            message: "What is your GitHub username?"
         },
     ]);
 };
@@ -91,10 +96,13 @@ function init() {
             //checks the obj to replace the license to a good markdown code for the selected license
             if (providedAnswers.license === "Apache") {
                 providedAnswers.license = "[Apache](http://www.apache.org/licenses/LICENSE-2.0)";
+                providedAnswers.licenseBadge = "![Apache License](https://img.shields.io/badge/License-Apache-blue)";
             } else if (providedAnswers.license === "MIT") {
                 providedAnswers.license = "[MIT](https://choosealicense.com/licenses/mit/)";
+                providedAnswers.licenseBadge = "![MIT License](https://img.shields.io/badge/License-MIT-green)";
             } else {
                 providedAnswers.license = "[ISC](https://choosealicense.com/licenses/isc/)";
+                providedAnswers.licenseBadge = "![ISC License](https://img.shields.io/badge/License-ISC-red)";
             };
 
             //checks to see if the user wanted a custom url
