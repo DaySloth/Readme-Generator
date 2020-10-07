@@ -1,5 +1,7 @@
+// required npm packages
 const fs = require("fs");
 const inquirer = require("inquirer");
+
 // array of questions for user
 function promptQuestions() {
     return inquirer.prompt([
@@ -7,6 +9,12 @@ function promptQuestions() {
             type: "input",
             name: "title",
             message: "What is the title of your project?"
+        },
+        {
+            type: "list",
+            name: "customImage",
+            message: "Would you like to add a custom image to your README?",
+            choices: ["Yes", "No"]
         },
         {
             type: "input",
@@ -51,6 +59,8 @@ function generateREADME(data) {
     return `
 # ${data.title}
 
+![Image of Project](${data.imageAddress})
+
 ## Description
 
 ${data.description}
@@ -91,6 +101,16 @@ Licensed under the ${data.license} license
 `
 };
 
+function askURL() {
+    return inquirer.prompt([
+        {
+            type: "input",
+            name: "customURL",
+            message: "What is the URL for your custom image?"
+        }
+    ])
+};
+
 // function to write README file
 function writeToFile(fileName, data) {
     fs.writeFile("./GeneratedREADME/" + fileName, data, function (err) {
@@ -115,9 +135,18 @@ function init() {
                 providedAnswers.license = "[ISC](https://choosealicense.com/licenses/isc/)";
             };
 
-            const README = generateREADME(providedAnswers);
-
-            writeToFile("README.md", README);
+            if(providedAnswers.customImage === "Yes"){
+                askURL()
+                    .then(function(response){
+                        providedAnswers.imageAddress = response.customURL;
+                        const README = generateREADME(providedAnswers);
+                        writeToFile("README.md", README);
+                    })
+            }else{
+                providedAnswers.imageAddress = 'https://images.unsplash.com/photo-1504198266287-1659872e6590?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80';
+                const README = generateREADME(providedAnswers);
+                writeToFile("README.md", README);
+            }
         });
 };
 
